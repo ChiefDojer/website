@@ -34,6 +34,36 @@ header {
   margin-left: auto; /* Push to right */
 }
 
+/* Add styles for header controls container */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Matrix toggle specific styles */
+.matrix-toggle .slider {
+  background: linear-gradient(45deg, #0a0a0a, #2d2d2d);
+}
+
+.matrix-toggle .slider i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #0F0;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.matrix-toggle input:checked + .slider {
+  background: linear-gradient(45deg, #001800, #003300);
+}
+
+.matrix-toggle input:checked + .slider i {
+  color: #00FF00;
+}
+
 /* Logo styles */
 .logo a {
   display: flex;
@@ -132,6 +162,10 @@ nav {
   }
   
   .header-content .switch {
+    order: 1;
+  }
+  
+  .header-controls {
     order: 1;
   }
 }

@@ -2,6 +2,7 @@
 import { ThemeManager } from './js/modules/theme.js';
 import { ToolsListManager } from './js/modules/toolsList.js';
 import { FeaturedToolsManager } from './js/modules/featuredTools.js';
+import { MatrixRain } from './js/modules/matrix.js';
 import { ErrorHandler } from './js/utils/errorHandler.js';
 
 class ComponentLoader {
@@ -20,13 +21,50 @@ class ComponentLoader {
                         </a>
                     </div>
                     <h1>AI Tools Collection</h1>
-                    <label class="switch">
-                        <input type="checkbox" id="theme-toggle">
-                        <div class="slider round">
-                            <div class="sun-moon"></div>
-                            <div class="stars"></div>
-                        </div>
-                    </label>
+                    <div class="header-controls">
+                        <label class="switch matrix-toggle" title="Toggle matrix effect">
+                            <input type="checkbox" id="matrix-toggle" checked>
+                            <div class="slider round">
+                                <i class="fas fa-terminal"></i>
+                            </div>
+                        </label>
+                        <label class="switch" title="Toggle dark/light theme">
+                            <input type="checkbox" id="theme-toggle">
+                            <div class="slider round">
+                                <div class="sun-moon">
+                                    <svg id="moon-dot-1" class="moon-dot" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="50"></circle>
+                                    </svg>
+                                    <svg id="moon-dot-2" class="moon-dot" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="50"></circle>
+                                    </svg>
+                                    <svg id="moon-dot-3" class="moon-dot" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="50"></circle>
+                                    </svg>
+                                    <svg id="light-ray-1" class="light-ray" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="50"></circle>
+                                    </svg>
+                                    <svg id="light-ray-2" class="light-ray" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="50"></circle>
+                                    </svg>
+                                    <svg id="light-ray-3" class="light-ray" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="50"></circle>
+                                    </svg>
+                                </div>
+                                <div class="stars">
+                                    <svg id="star-1" class="star" viewBox="0 0 20 20">
+                                        <path d="M0 10C10 10,10 10,0 10C10 10,10 10,10 20C10 10,10 10,20 10C10 10,10 10,10 0C10 10,10 10,0 10Z"></path>
+                                    </svg>
+                                    <svg id="star-2" class="star" viewBox="0 0 20 20">
+                                        <path d="M0 10C10 10,10 10,0 10C10 10,10 10,10 20C10 10,10 10,20 10C10 10,10 10,10 0C10 10,10 10,0 10Z"></path>
+                                    </svg>
+                                    <svg id="star-3" class="star" viewBox="0 0 20 20">
+                                        <path d="M0 10C10 10,10 10,0 10C10 10,10 10,10 20C10 10,10 10,20 10C10 10,10 10,10 0C10 10,10 10,0 10Z"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
                 </div>
                 <nav role="navigation" aria-label="Main navigation">
                     <ul class="top-menu">
@@ -99,6 +137,7 @@ class App {
             this.themeManager = new ThemeManager();
             this.toolsListManager = new ToolsListManager();
             this.featuredToolsManager = new FeaturedToolsManager();
+            this.matrixRain = new MatrixRain();
         } catch (error) {
             ErrorHandler.handle(error, 'App.init');
         }
