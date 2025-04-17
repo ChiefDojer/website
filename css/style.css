@@ -1,0 +1,19 @@
+/* Base Styles */
+@import 'base.css';
+
+/* Layout */
+@import 'layout.css';
+
+/* Components */
+@import 'components/header.css';
+@import 'components/footer.css';
+@import 'components/cards.css';
+@import 'components/social-icons.css';
+@import 'components/theme-switch.css';
+@import 'components/tool-card.css';
+@import 'components/tools-filter.css';
+@import 'components/news-card.css';
+@import 'components/game-card.css';
+@import 'components/example-card.css';
+
+/* If you need to override any styles, add them below */

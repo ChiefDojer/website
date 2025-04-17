@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 - Page Not Found | AI Tools Collection</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    .error-section {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .error-code {
+      font-size: 8rem;
+      font-weight: bold;
+      color: var(--header-bg);
+      margin: 0;
+      line-height: 1;
+      opacity: 0.8;
+    }
+
+    .error-message {
+      font-size: 2rem;
+      color: var(--text-color);
+      margin: 1rem 0 2rem;
+    }
+
+    .error-description {
+      color: var(--text-color);
+      margin-bottom: 2rem;
+      opacity: 0.8;
+    }
+
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--header-bg);
+      color: white;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .back-home:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--hover-shadow);
+    }
+
+    .error-illustration {
+      max-width: 400px;
+      margin: 2rem auto;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <include src="components/header.html"></include>
+
+  <div class="page-wrapper">
+    <main class="main-content">
+      <section class="error-section">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-message">Page Not Found</h2>
+        <p class="error-description">The page you're looking for doesn't exist or has been moved.</p>
+        <svg class="error-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <style>
+            .robot { fill: var(--header-bg); }
+            .eye { fill: white; }
+            .antenna { stroke: var(--header-bg); fill: none; }
+          </style>
+          <circle class="robot" cx="50" cy="50" r="30"/>
+          <circle class="eye" cx="40" cy="45" r="5"/>
+          <circle class="eye" cx="60" cy="45" r="5"/>
+          <path class="robot" d="M40,60 Q50,70 60,60" stroke="white" fill="none"/>
+          <line class="antenna" x1="50" y1="20" x2="50" y2="10" stroke-width="2"/>
+          <circle class="robot" cx="50" cy="10" r="3"/>
+        </svg>
+        <a href="index.html" class="back-home">
+          <i class="fas fa-home"></i>
+          Back to Home
+        </a>
+      </section>
+    </main>
+  </div>
+
+  <include src="components/footer.html"></include>
+
+  <script type="module" src="scripts.js"></script>
+</body>
+</html>

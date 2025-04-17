@@ -1,0 +1,44 @@
+/* Social media icons styles */
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--card-bg);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  background-color: var(--hover-shadow);
+}
+
+.social-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--text-color);
+}
+
+.social-icon.github:hover {
+  background-color: #333;
+}
+
+.social-icon.linkedin:hover {
+  background-color: #0077b5;
+}
+
+.social-icon.twitter:hover {
+  background-color: #1da1f2;
+}
+
+.social-icon:hover svg {
+  fill: white;
+}

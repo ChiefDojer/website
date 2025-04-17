@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Games - AI Tools Collection</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+  <include src="components/header.html"></include>
+
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-content">
+        <div class="menu-section">
+          <h3>Game Categories</h3>
+          <ul class="side-menu">
+            <li><a href="#strategy">Strategy Games</a></li>
+            <li><a href="#puzzle">Puzzle Games</a></li>
+            <li><a href="#adventure">Adventure Games</a></li>
+            <li><a href="#educational">Educational Games</a></li>
+            <li><a href="#competitive">Competitive Games</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <section class="games-section" id="featured-games">
+        <h2>Featured AI Games</h2>
+        <div class="games-grid">
+          <article class="game-card">
+            <div class="game-image">
+              <img src="images/game-placeholder.png" alt="Game thumbnail" loading="lazy">
+            </div>
+            <div class="game-content">
+              <h3>AI Chess Master</h3>
+              <p>Challenge yourself against an advanced AI chess opponent that adapts to your playing style.</p>
+              <div class="game-footer">
+                <span class="game-category">Strategy</span>
+                <a href="#" class="play-button">Play Now</a>
+              </div>
+            </div>
+          </article>
+          <!-- More game cards will be dynamically added -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <include src="components/footer.html"></include>
+
+  <script type="module" src="scripts.js"></script>
+</body>
+</html>

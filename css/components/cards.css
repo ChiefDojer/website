@@ -1,0 +1,99 @@
+/* Card component styles */
+.card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px var(--card-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px var(--hover-shadow);
+}
+
+.card h2 {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--header-bg);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.card h3 {
+    color: var(--text-color);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.card-content {
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Menu section card styles */
+.menu-section {
+    margin-bottom: 2rem;
+}
+
+.menu-section.card {
+    /* Inherit card styles */
+}
+
+/* About section card styles */
+.about-section {
+    padding: 1.5rem;
+}
+
+.about-section.card {
+    /* Inherit card styles */
+}
+
+.about-section p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+/* Tools list card styles */
+#tools-list {
+    list-style: none;
+    padding: 0;
+}
+
+#tools-list li {
+    margin-bottom: 0.75rem;
+}
+
+#tools-list a {
+    color: var(--text-color);
+    text-decoration: none;
+    display: block;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+#tools-list a:hover {
+    background-color: var(--hover-shadow);
+    transform: translateX(4px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card {
+        padding: 1.5rem;
+    }
+    
+    .card h2 {
+        font-size: 1.35rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 1.25rem;
+    }
+}
