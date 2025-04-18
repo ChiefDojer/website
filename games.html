@@ -6,6 +6,119 @@
   <title>AI Games - AI Tools Collection</title>
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: var(--card-bg);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px var(--card-shadow);
+    }
+    .game-board {
+      border: 2px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      max-width: 512px;
+    }
+    .control-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .game-button {
+      background-color: var(--header-bg);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .game-button:hover {
+      filter: brightness(1.1);
+    }
+    .game-button:disabled {
+      background-color: var(--border-color);
+      cursor: not-allowed;
+    }
+    .info {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 512px;
+      margin-bottom: 10px;
+      color: var(--text-color);
+    }
+    select {
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      background: var(--card-bg);
+      color: var(--text-color);
+    }
+    .game-label {
+      margin-right: 10px;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+    .status {
+      font-weight: bold;
+      font-size: 18px;
+      color: var(--text-color);
+      margin-top: 10px;
+    }
+    
+    /* Blackjack specific styles */
+    .blackjack-container {
+      display: none;
+    }
+    .blackjack-container.active {
+      display: block;
+    }
+    .card {
+      background-color: white;
+      color: black;
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      margin: 0.25rem;
+      min-width: 50px;
+      text-align: center;
+      font-weight: bold;
+      display: inline-block;
+      box-shadow: 2px 2px 5px var(--card-shadow);
+    }
+    .card.red {
+      color: #dc2626;
+    }
+    .card.black {
+      color: #1f2937;
+    }
+    .card-hidden {
+      background-color: var(--border-color);
+      color: var(--border-color);
+    }
+    .hand-area {
+      min-height: 80px;
+      background-color: rgba(0, 80, 0, 0.5);
+      border: 2px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+  </style>
 </head>
 <body>
   <canvas id="matrix-canvas"></canvas>
@@ -15,13 +128,12 @@
     <aside class="sidebar">
       <div class="sidebar-content">
         <div class="menu-section">
-          <h3>Game Categories</h3>
+          <h3>Games</h3>
           <ul class="side-menu">
-            <li><a href="#strategy">Strategy Games</a></li>
-            <li><a href="#puzzle">Puzzle Games</a></li>
-            <li><a href="#adventure">Adventure Games</a></li>
-            <li><a href="#educational">Educational Games</a></li>
-            <li><a href="#competitive">Competitive Games</a></li>
+            <li><a href="#snake" data-game="snake">Snake</a></li>  
+            <li><a href="#blackjack" data-game="blackjack">Casino Blackjack</a></li>
+            <li><a href="#tetris" data-game="tetris">Tetris</a></li> 
+            <li><a href="#checkers" data-game="checkers">Сheckers</a></li>                                    
           </ul>
         </div>
       </div>
@@ -29,29 +141,133 @@
 
     <main class="main-content">
       <section class="games-section" id="featured-games">
-        <h2>Featured AI Games</h2>
-        <div class="games-grid">
-          <article class="game-card">
-            <div class="game-image">
-              <img src="images/game-placeholder.png" alt="Game thumbnail" loading="lazy">
-            </div>
-            <div class="game-content">
-              <h3>AI Chess Master</h3>
-              <p>Challenge yourself against an advanced AI chess opponent that adapts to your playing style.</p>
-              <div class="game-footer">
-                <span class="game-category">Strategy</span>
-                <a href="#" class="play-button">Play Now</a>
-              </div>
-            </div>
-          </article>
-          <!-- More game cards will be dynamically added -->
+      <h2 id="gameTitle">Snake</h2>
+      
+      <!-- Snake Game Container -->
+      <div class="game-container" id="snakeGame">
+        <div class="info">
+          <div>
+            <label class="game-label">Current Length: <span id="currentLength">2</span></label>
+          </div>
+          <div>
+            <label class="game-label">Target Length: <span id="targetLength">15</span></label>
+          </div>
         </div>
+        
+        <canvas id="gameBoard" class="game-board" width="512" height="512"></canvas>
+        
+        <div class="controls">
+          <div class="control-row">
+            <div>
+              <label class="game-label" for="speed">Speed:</label>
+              <select id="speed">
+                <option value="100">Slow</option>
+                <option value="75" selected>Normal</option>
+                <option value="50">Fast</option>
+                <option value="30">Very Fast</option>
+              </select>
+            </div>
+            <div>
+              <label class="game-label" for="targetLengthSelect">Win Length:</label>
+              <select id="targetLengthSelect">
+                <option value="10">10</option>
+                <option value="15" selected>15</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+              </select>
+            </div>
+            <div>
+              <label class="game-label" for="ignoreBorders">
+                <input type="checkbox" id="ignoreBorders"> Ignore Borders
+              </label>
+            </div>
+          </div>
+          <div class="control-row">
+            <button id="playButton" class="game-button">Play</button>
+            <button id="resetButton" class="game-button">Reset</button>
+          </div>
+        </div>
+        
+        <div id="status" class="status">Press Play to start</div>
+      </div>
+
+      <!-- Blackjack Game Container -->
+      <div class="game-container blackjack-container" id="blackjackGame">
+        <div id="startScreen">
+          <button id="playButton" class="game-button">Play Blackjack</button>
+        </div>
+
+        <div id="gameArea" class="hidden">
+          <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-2">Dealer's Hand (<span id="dealerScore">0</span>)</h2>
+            <div id="dealerCards" class="hand-area"></div>
+          </div>
+
+          <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-2">Your Hand (<span id="playerScore">0</span>)</h2>
+            <div id="playerCards" class="hand-area"></div>
+          </div>
+
+          <div id="gameControls" class="controls">
+            <button id="hitButton" class="game-button">Hit</button>
+            <button id="standButton" class="game-button">Stand</button>
+          </div>
+
+          <div id="messageArea" class="status">
+            Click Play to start
+          </div>
+
+          <div id="playAgainArea" class="hidden">
+            <button id="playAgainButton" class="game-button">Play Again?</button>
+          </div>
+        </div>
+      </div>
       </section>
     </main>
   </div>
 
   <include src="components/footer.html"></include>
 
+  <script type="module">
+    import { initGame } from './js/games/snake.js';
+    import { initBlackjackGame } from './js/games/casinoBlackjack.js';
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuLinks = document.querySelectorAll('.side-menu a');
+      const gameTitle = document.getElementById('gameTitle');
+      const snakeGame = document.getElementById('snakeGame');
+      const blackjackGame = document.getElementById('blackjackGame');
+      
+      // Initialize games
+      initGame();
+      initBlackjackGame();
+      
+      // Show Snake game by default
+      snakeGame.style.display = 'block';
+      blackjackGame.style.display = 'none';
+      
+      menuLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const gameName = this.getAttribute('data-game');
+          gameTitle.textContent = this.textContent;
+          
+          // Hide all games
+          snakeGame.style.display = 'none';
+          blackjackGame.style.display = 'none';
+          
+          // Show selected game
+          if (gameName === 'snake') {
+            snakeGame.style.display = 'block';
+          } else if (gameName === 'blackjack') {
+            blackjackGame.style.display = 'block';
+          }
+        });
+      });
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
   <script type="module" src="scripts.js"></script>
 </body>
 </html>

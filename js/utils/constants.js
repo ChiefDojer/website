@@ -6,6 +6,10 @@ export const THEME = {
     DATA_ATTRIBUTE: 'data-theme'
 };
 
+export const MATRIX = {
+    ENABLED: 'matrix-enabled'
+};
+
 export const SELECTORS = {
     THEME_TOGGLE: '#theme-toggle',
     TOOLS_LIST: '#tools-list',

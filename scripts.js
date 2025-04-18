@@ -138,9 +138,28 @@ class App {
             this.toolsListManager = new ToolsListManager();
             this.featuredToolsManager = new FeaturedToolsManager();
             this.matrixRain = new MatrixRain();
+            
+            // Set active navigation based on current page
+            this.setActiveNavigation();
         } catch (error) {
             ErrorHandler.handle(error, 'App.init');
         }
+    }
+
+    setActiveNavigation() {
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('.top-menu a');
+        
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPage) {
+                link.classList.add('active');
+                link.setAttribute('aria-current', 'page');
+            } else {
+                link.classList.remove('active');
+                link.removeAttribute('aria-current');
+            }
+        });
     }
 }
 

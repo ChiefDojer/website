@@ -1,0 +1,102 @@
+.blackjack-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.hand-area {
+  min-height: 120px;
+  background-color: var(--game-table-bg, rgba(0, 80, 0, 0.5));
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.hand-title {
+  color: var(--text-color);
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card {
+  background-color: white;
+  color: black;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin: 0.35rem;
+  min-width: 60px;
+  text-align: center;
+  font-weight: bold;
+  display: inline-block;
+  box-shadow: 2px 2px 5px var(--card-shadow);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card.red {
+  color: #dc2626;
+}
+
+.card.black {
+  color: #1f2937;
+}
+
+.card-hidden {
+  background-color: var(--card-back-bg, #6b7280);
+  color: transparent;
+  background-image: linear-gradient(45deg, 
+    var(--card-pattern-1, #4b5563) 25%, 
+    transparent 25%, 
+    transparent 75%, 
+    var(--card-pattern-1, #4b5563) 75%
+  );
+  background-size: 10px 10px;
+}
+
+.game-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.game-button {
+  min-width: 120px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+}
+
+.game-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px var(--card-shadow);
+}
+
+.game-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+#messageArea {
+  text-align: center;
+  font-size: 1.25rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--card-bg);
+  margin: 1rem 0;
+}
+
+.hidden {
+  display: none !important;
+}

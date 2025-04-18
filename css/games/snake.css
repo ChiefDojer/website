@@ -1,0 +1,133 @@
+.snake-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.game-board {
+  border: 3px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px var(--card-shadow);
+  background-color: var(--game-board-bg, #1a1a1a);
+}
+
+.info-panel {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 512px;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--card-shadow);
+}
+
+.score-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.score-label {
+  font-weight: bold;
+  color: var(--text-color);
+  font-size: 1.1rem;
+}
+
+.score-value {
+  font-size: 1.2rem;
+  color: var(--accent-color, #4ade80);
+  font-weight: bold;
+}
+
+.controls-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 512px;
+}
+
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--card-shadow);
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+select {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg, var(--card-bg));
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+select:hover {
+  border-color: var(--accent-color, #4ade80);
+}
+
+.game-button {
+  min-width: 120px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+  background-color: var(--accent-color, #4ade80);
+}
+
+.game-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px var(--card-shadow);
+  filter: brightness(1.1);
+}
+
+.game-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.game-button:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.status-message {
+  text-align: center;
+  font-size: 1.25rem;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  border-radius: 8px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 2px 4px var(--card-shadow);
+}
+
+.checkbox-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+}

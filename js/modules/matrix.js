@@ -1,3 +1,6 @@
+import { StorageService } from '../utils/storage.js';
+import { MATRIX } from '../utils/constants.js';
+
 export class MatrixRain {
     constructor() {
         this.canvas = document.getElementById('matrix-canvas');
@@ -13,7 +16,9 @@ export class MatrixRain {
         this.drops = [];
         this.lastFrame = 0;
         this.frameInterval = 100;
-        this.isEnabled = true; // Add enabled state
+        
+        // Get stored state or default to true if not set
+        this.isEnabled = StorageService.get(MATRIX.ENABLED, true);
         
         this.init();
         this.setupEventListeners();
@@ -44,11 +49,17 @@ export class MatrixRain {
             this.resetDrops();
         });
 
-        // Add matrix toggle handler
+        // Update matrix toggle handler to use storage
         const toggle = document.getElementById('matrix-toggle');
         if (toggle) {
+            // Set initial toggle state
+            toggle.checked = this.isEnabled;
+            
             toggle.addEventListener('change', () => {
                 this.isEnabled = toggle.checked;
+                // Store the new state
+                StorageService.set(MATRIX.ENABLED, this.isEnabled);
+                
                 if (!this.isEnabled) {
                     // Clear the canvas when disabled
                     this.ctx.clearRect(0, 0, this.width, this.height);
