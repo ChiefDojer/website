@@ -1,9 +1,18 @@
 // Snake game implementation
-export function initGame() {
+// Snake game implementation
+window.initSnakeGame = function () {
+    console.log('initSnakeGame called');
     const canvas = document.getElementById('gameBoard');
+    if (!canvas) {
+        console.error('Canvas element not found!');
+        return;
+    }
     const ctx = canvas.getContext('2d');
+    console.log(`Canvas found: ${canvas.width}x${canvas.height}`);
+
     const GRID_SIZE = 32;
     const CELL_SIZE = canvas.width / GRID_SIZE;
+    console.log(`Cell size: ${CELL_SIZE}`);
 
     let snake = [
         { x: Math.floor(GRID_SIZE / 2), y: Math.floor(GRID_SIZE / 2) }
@@ -15,7 +24,7 @@ export function initGame() {
     let gameStarted = false;
     let ignoreBorders = false;
 
-    const playButton = document.getElementById('playButton');
+    const playButton = document.getElementById('snakePlayButton');
     const resetButton = document.getElementById('resetButton');
     const speedSelect = document.getElementById('speed');
     const targetLengthSelect = document.getElementById('targetLengthSelect');
@@ -36,84 +45,87 @@ export function initGame() {
     }
 
     function drawGame() {
-        // Clear canvas
-        ctx.fillStyle = '#e0e0e0';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        try {
+            // Clear canvas
+            ctx.fillStyle = '#e0e0e0';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw grid lines
-        ctx.strokeStyle = '#d0d0d0';
-        ctx.lineWidth = 1;
+            // Draw grid lines
+            ctx.strokeStyle = '#a0a0a0'; // Darker for better contrast
+            ctx.lineWidth = 1;
 
-        // Vertical lines
-        for (let x = 0; x <= GRID_SIZE; x++) {
-            ctx.beginPath();
-            ctx.moveTo(x * CELL_SIZE, 0);
-            ctx.lineTo(x * CELL_SIZE, canvas.height);
-            ctx.stroke();
-        }
-
-        // Horizontal lines
-        for (let y = 0; y <= GRID_SIZE; y++) {
-            ctx.beginPath();
-            ctx.moveTo(0, y * CELL_SIZE);
-            ctx.lineTo(canvas.width, y * CELL_SIZE);
-            ctx.stroke();
-        }
-
-        // Draw snake
-        snake.forEach((segment, index) => {
-            // Head is green, body is darker green
-            if (index === 0) {
-                ctx.fillStyle = '#2ecc71';
-            } else {
-                ctx.fillStyle = '#27ae60';
+            // Vertical lines
+            for (let x = 0; x <= GRID_SIZE; x++) {
+                ctx.beginPath();
+                ctx.moveTo(x * CELL_SIZE, 0);
+                ctx.lineTo(x * CELL_SIZE, canvas.height);
+                ctx.stroke();
             }
 
-            // Draw rounded rectangle for snake segments
-            roundedRect(
-                segment.x * CELL_SIZE + 1,
-                segment.y * CELL_SIZE + 1,
-                CELL_SIZE - 2,
-                CELL_SIZE - 2,
-                CELL_SIZE / 4
+            // Horizontal lines
+            for (let y = 0; y <= GRID_SIZE; y++) {
+                ctx.beginPath();
+                ctx.moveTo(0, y * CELL_SIZE);
+                ctx.lineTo(canvas.width, y * CELL_SIZE);
+                ctx.stroke();
+            }
+
+            // Draw snake
+            snake.forEach((segment, index) => {
+                // Head is green, body is darker green
+                if (index === 0) {
+                    ctx.fillStyle = '#2ecc71';
+                } else {
+                    ctx.fillStyle = '#27ae60';
+                }
+
+                // Draw rectangle for snake segments (using fillRect for stability)
+                ctx.fillRect(
+                    segment.x * CELL_SIZE + 1,
+                    segment.y * CELL_SIZE + 1,
+                    CELL_SIZE - 2,
+                    CELL_SIZE - 2
+                );
+
+                // Draw eyes on head
+                if (index === 0) {
+                    ctx.fillStyle = 'white';
+                    const eyeOffset = CELL_SIZE / 4;
+                    const eyeRadius = CELL_SIZE / 10;
+
+                    // Calculate eye positions based on direction
+                    const eyePositions = getEyePositions(segment, eyeOffset);
+
+                    // Draw eyes
+                    eyePositions.forEach(pos => {
+                        // White of the eye
+                        ctx.beginPath();
+                        ctx.arc(pos.x, pos.y, eyeRadius, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // Pupil
+                        ctx.fillStyle = 'black';
+                        ctx.beginPath();
+                        ctx.arc(pos.x, pos.y, eyeRadius / 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                }
+            });
+
+            // Draw food
+            ctx.fillStyle = '#e74c3c';
+            ctx.beginPath();
+            ctx.arc(
+                (food.x + 0.5) * CELL_SIZE,
+                (food.y + 0.5) * CELL_SIZE,
+                CELL_SIZE / 2 * 0.8,
+                0,
+                Math.PI * 2
             );
-
-            // Draw eyes on head
-            if (index === 0) {
-                ctx.fillStyle = 'white';
-                const eyeOffset = CELL_SIZE / 4;
-                const eyeRadius = CELL_SIZE / 10;
-
-                // Calculate eye positions based on direction
-                const eyePositions = getEyePositions(segment, eyeOffset);
-
-                // Draw eyes
-                eyePositions.forEach(pos => {
-                    // White of the eye
-                    ctx.beginPath();
-                    ctx.arc(pos.x, pos.y, eyeRadius, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    // Pupil
-                    ctx.fillStyle = 'black';
-                    ctx.beginPath();
-                    ctx.arc(pos.x, pos.y, eyeRadius / 2, 0, Math.PI * 2);
-                    ctx.fill();
-                });
-            }
-        });
-
-        // Draw food
-        ctx.fillStyle = '#e74c3c';
-        ctx.beginPath();
-        ctx.arc(
-            (food.x + 0.5) * CELL_SIZE,
-            (food.y + 0.5) * CELL_SIZE,
-            CELL_SIZE / 2 * 0.8,
-            0,
-            Math.PI * 2
-        );
-        ctx.fill();
+            ctx.fill();
+        } catch (e) {
+            console.error('Error in drawGame:', e);
+        }
     }
 
     function getEyePositions(segment, offset) {
@@ -123,23 +135,23 @@ export function initGame() {
 
         if (direction.x === 1) { // Right
             positions.push(
-                {x: x + CELL_SIZE - offset, y: y + CELL_SIZE / 3},
-                {x: x + CELL_SIZE - offset, y: y + CELL_SIZE * 2/3}
+                { x: x + CELL_SIZE - offset, y: y + CELL_SIZE / 3 },
+                { x: x + CELL_SIZE - offset, y: y + CELL_SIZE * 2 / 3 }
             );
         } else if (direction.x === -1) { // Left
             positions.push(
-                {x: x + offset, y: y + CELL_SIZE / 3},
-                {x: x + offset, y: y + CELL_SIZE * 2/3}
+                { x: x + offset, y: y + CELL_SIZE / 3 },
+                { x: x + offset, y: y + CELL_SIZE * 2 / 3 }
             );
         } else if (direction.y === -1) { // Up
             positions.push(
-                {x: x + CELL_SIZE / 3, y: y + offset},
-                {x: x + CELL_SIZE * 2/3, y: y + offset}
+                { x: x + CELL_SIZE / 3, y: y + offset },
+                { x: x + CELL_SIZE * 2 / 3, y: y + offset }
             );
         } else { // Down
             positions.push(
-                {x: x + CELL_SIZE / 3, y: y + CELL_SIZE - offset},
-                {x: x + CELL_SIZE * 2/3, y: y + CELL_SIZE - offset}
+                { x: x + CELL_SIZE / 3, y: y + CELL_SIZE - offset },
+                { x: x + CELL_SIZE * 2 / 3, y: y + CELL_SIZE - offset }
             );
         }
 
@@ -182,7 +194,7 @@ export function initGame() {
             food = generateFood();
             score++;
             currentLengthSpan.textContent = score;
-            
+
             // Check win condition
             const targetLength = parseInt(targetLengthSelect.value);
             if (score >= targetLength) {
@@ -197,6 +209,7 @@ export function initGame() {
     }
 
     function gameOver() {
+        console.log('Game Over');
         clearInterval(gameLoop);
         gameStarted = false;
         statusDiv.textContent = 'Game Over! Press Play to try again';
@@ -205,6 +218,7 @@ export function initGame() {
     }
 
     function gameWon() {
+        console.log('Game Won');
         clearInterval(gameLoop);
         gameStarted = false;
         statusDiv.textContent = 'Congratulations! You won!';
@@ -213,6 +227,7 @@ export function initGame() {
     }
 
     function resetGame() {
+        console.log('Resetting game...');
         snake = [
             { x: Math.floor(GRID_SIZE / 2), y: Math.floor(GRID_SIZE / 2) }
         ];
@@ -222,6 +237,7 @@ export function initGame() {
         currentLengthSpan.textContent = score;
         statusDiv.textContent = 'Press Play to start';
         drawGame();
+        console.log('Game reset complete');
     }
 
     function handleKeyPress(event) {
@@ -235,34 +251,42 @@ export function initGame() {
             'ArrowRight': { x: 1, y: 0 }
         }[key];
 
-        if (newDirection && 
+        if (newDirection &&
             !(newDirection.x + direction.x === 0 && newDirection.y + direction.y === 0)) {
             direction = newDirection;
         }
     }
 
     // Event Listeners
-    playButton.addEventListener('click', () => {
-        if (gameStarted) {
+    if (playButton) {
+        playButton.addEventListener('click', () => {
+            console.log('Play button clicked');
+            if (gameStarted) {
+                clearInterval(gameLoop);
+                gameStarted = false;
+                playButton.textContent = 'Play';
+                statusDiv.textContent = 'Game Paused';
+            } else {
+                gameStarted = true;
+                playButton.textContent = 'Pause';
+                statusDiv.textContent = 'Game Running';
+                const speed = parseInt(speedSelect.value);
+                gameLoop = setInterval(moveSnake, speed);
+            }
+        });
+    } else {
+        console.error('Play button not found');
+    }
+
+    if (resetButton) {
+        resetButton.addEventListener('click', () => {
+            console.log('Reset button clicked');
             clearInterval(gameLoop);
             gameStarted = false;
             playButton.textContent = 'Play';
-            statusDiv.textContent = 'Game Paused';
-        } else {
-            gameStarted = true;
-            playButton.textContent = 'Pause';
-            statusDiv.textContent = 'Game Running';
-            const speed = parseInt(speedSelect.value);
-            gameLoop = setInterval(moveSnake, speed);
-        }
-    });
-
-    resetButton.addEventListener('click', () => {
-        clearInterval(gameLoop);
-        gameStarted = false;
-        playButton.textContent = 'Play';
-        resetGame();
-    });
+            resetGame();
+        });
+    }
 
     targetLengthSelect.addEventListener('change', () => {
         targetLengthSpan.textContent = targetLengthSelect.value;

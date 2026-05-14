@@ -238,20 +238,20 @@ function startGame() {
     }
 }
 
-function initBlackjackGame() {
-    startScreen = document.getElementById('startScreen');
-    gameArea = document.getElementById('gameArea');
-    playButton = document.getElementById('playButton');
-    playAgainButton = document.getElementById('playAgainButton');
+window.initBlackjackGame = function () {
+    startScreen = document.getElementById('blackjackStartScreen');
+    gameArea = document.getElementById('blackjackGameArea');
+    playButton = document.getElementById('blackjackPlayButton');
+    playAgainButton = document.getElementById('blackjackPlayAgainButton');
     hitButton = document.getElementById('hitButton');
     standButton = document.getElementById('standButton');
     dealerCardsDiv = document.getElementById('dealerCards');
     playerCardsDiv = document.getElementById('playerCards');
     dealerScoreSpan = document.getElementById('dealerScore');
     playerScoreSpan = document.getElementById('playerScore');
-    messageArea = document.getElementById('messageArea');
-    gameControls = document.getElementById('gameControls');
-    playAgainArea = document.getElementById('playAgainArea');
+    messageArea = document.getElementById('blackjackMessageArea');
+    gameControls = document.getElementById('blackjackGameControls');
+    playAgainArea = document.getElementById('blackjackPlayAgainArea');
 
     // Event Listeners
     playButton.addEventListener('click', () => {
@@ -269,5 +269,3 @@ function initBlackjackGame() {
     hitButton.addEventListener('click', playerHit);
     standButton.addEventListener('click', playerStand);
 }
-
-export { initBlackjackGame };

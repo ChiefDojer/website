@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Games - AI Tools Collection</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/games/games.css" />
+  <link rel="stylesheet" href="css/games/snake.css" />
+  <link rel="stylesheet" href="css/games/blackjack.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <style>
     .game-container {
@@ -16,10 +20,12 @@
       border-radius: 10px;
       box-shadow: 0 0 10px var(--card-shadow);
     }
+
     .game-board {
       border: 2px solid var(--border-color);
       margin-bottom: 20px;
     }
+
     .controls {
       display: flex;
       flex-direction: column;
@@ -27,12 +33,14 @@
       width: 100%;
       max-width: 512px;
     }
+
     .control-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
     }
+
     .game-button {
       background-color: var(--header-bg);
       color: white;
@@ -46,13 +54,16 @@
       cursor: pointer;
       border-radius: 5px;
     }
+
     .game-button:hover {
       filter: brightness(1.1);
     }
+
     .game-button:disabled {
       background-color: var(--border-color);
       cursor: not-allowed;
     }
+
     .info {
       display: flex;
       justify-content: space-between;
@@ -61,6 +72,7 @@
       margin-bottom: 10px;
       color: var(--text-color);
     }
+
     select {
       padding: 8px;
       border-radius: 4px;
@@ -68,25 +80,29 @@
       background: var(--card-bg);
       color: var(--text-color);
     }
+
     .game-label {
       margin-right: 10px;
       font-weight: bold;
       color: var(--text-color);
     }
+
     .status {
       font-weight: bold;
       font-size: 18px;
       color: var(--text-color);
       margin-top: 10px;
     }
-    
+
     /* Blackjack specific styles */
     .blackjack-container {
       display: none;
     }
+
     .blackjack-container.active {
       display: block;
     }
+
     .card {
       background-color: white;
       color: black;
@@ -100,16 +116,20 @@
       display: inline-block;
       box-shadow: 2px 2px 5px var(--card-shadow);
     }
+
     .card.red {
       color: #dc2626;
     }
+
     .card.black {
       color: #1f2937;
     }
+
     .card-hidden {
       background-color: var(--border-color);
       color: var(--border-color);
     }
+
     .hand-area {
       min-height: 80px;
       background-color: rgba(0, 80, 0, 0.5);
@@ -120,9 +140,51 @@
     }
   </style>
 </head>
+
 <body>
   <canvas id="matrix-canvas"></canvas>
-  <include src="components/header.html"></include>
+  <div class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <a href="index.html">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2" />
+              <path
+                d="M12 20C12 16.6863 14.6863 14 18 14H22C25.3137 14 28 16.6863 28 20C28 23.3137 25.3137 26 22 26H18C14.6863 26 12 23.3137 12 20Z"
+                fill="currentColor" />
+              <circle cx="20" cy="20" r="4" fill="var(--primary-color)" />
+            </svg>
+            <span>AI Tools</span>
+          </a>
+        </div>
+        <h1>AI Tools Collection</h1>
+        <div class="header-controls">
+          <label class="switch matrix-toggle" title="Toggle matrix effect">
+            <input type="checkbox" id="matrix-toggle" checked>
+            <div class="slider round">
+              <i class="fas fa-terminal"></i>
+            </div>
+          </label>
+          <label class="switch" title="Toggle dark/light theme">
+            <input type="checkbox" id="theme-toggle">
+            <div class="slider round">
+              <i class="fas fa-sun"></i>
+            </div>
+          </label>
+        </div>
+      </div>
+      <nav role="navigation" aria-label="Main navigation">
+        <ul class="top-menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="news.html">AI News</a></li>
+          <li><a href="games.html" class="active" aria-current="page">AI Games</a></li>
+          <li><a href="examples.html">Web UI Examples</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 
   <div class="page-wrapper">
     <aside class="sidebar">
@@ -130,144 +192,268 @@
         <div class="menu-section">
           <h3>Games</h3>
           <ul class="side-menu">
-            <li><a href="#snake" data-game="snake">Snake</a></li>  
+            <li><a href="#snake" data-game="snake" class="active">Snake</a></li>
             <li><a href="#blackjack" data-game="blackjack">Casino Blackjack</a></li>
-            <li><a href="#tetris" data-game="tetris">Tetris</a></li> 
-            <li><a href="#checkers" data-game="checkers">Сheckers</a></li>                                    
+            <li><a href="#tetris" data-game="tetris">Tetris</a></li>
+            <li><a href="#checkers" data-game="checkers">Сheckers</a></li>
           </ul>
         </div>
       </div>
     </aside>
 
     <main class="main-content">
-      <section class="games-section" id="featured-games">
-      <h2 id="gameTitle">Snake</h2>
-      
-      <!-- Snake Game Container -->
-      <div class="game-container" id="snakeGame">
-        <div class="info">
-          <div>
-            <label class="game-label">Current Length: <span id="currentLength">2</span></label>
+      <div class="game-window-wrapper">
+        <div class="game-window-header">
+          <h2 id="gameTitle">Select a Game</h2>
+        </div>
+
+        <div class="game-display-area">
+          <!-- Placeholder -->
+          <div id="gamePlaceholder" class="game-placeholder">
+            <div class="placeholder-content">
+              <i class="fas fa-gamepad"></i>
+              <h3>Ready to Play?</h3>
+              <p>Select a game from the menu to start playing</p>
+            </div>
           </div>
-          <div>
-            <label class="game-label">Target Length: <span id="targetLength">15</span></label>
+
+          <!-- Snake Game Container -->
+          <div class="game-container" id="snakeGame">
+            <div class="info">
+              <div>
+                <label class="game-label">Current Length: <span id="currentLength">2</span></label>
+              </div>
+              <div>
+                <label class="game-label">Target Length: <span id="targetLength">15</span></label>
+              </div>
+            </div>
+
+            <canvas id="gameBoard" class="game-board" width="512" height="512"></canvas>
+
+            <div class="controls">
+              <div class="control-row">
+                <div>
+                  <label class="game-label" for="speed">Speed:</label>
+                  <select id="speed">
+                    <option value="100">Slow</option>
+                    <option value="75" selected>Normal</option>
+                    <option value="50">Fast</option>
+                    <option value="30">Very Fast</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="game-label" for="targetLengthSelect">Win Length:</label>
+                  <select id="targetLengthSelect">
+                    <option value="10">10</option>
+                    <option value="15" selected>15</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="game-label" for="ignoreBorders">
+                    <input type="checkbox" id="ignoreBorders"> Ignore Borders
+                  </label>
+                </div>
+              </div>
+              <div class="control-row">
+                <button id="snakePlayButton" class="game-button">Play</button>
+                <button id="resetButton" class="game-button">Reset</button>
+              </div>
+            </div>
+
+            <div id="status" class="status">Press Play to start</div>
+          </div>
+
+          <!-- Blackjack Game Container -->
+          <div class="game-container blackjack-container" id="blackjackGame">
+            <div id="blackjackStartScreen">
+              <button id="blackjackPlayButton" class="game-button">Play Blackjack</button>
+            </div>
+
+            <div id="blackjackGameArea" class="hidden">
+              <div class="mb-6">
+                <h2 class="text-xl font-semibold mb-2">Dealer's Hand (<span id="dealerScore">0</span>)</h2>
+                <div id="dealerCards" class="hand-area"></div>
+              </div>
+
+              <div class="mb-6">
+                <h2 class="text-xl font-semibold mb-2">Your Hand (<span id="playerScore">0</span>)</h2>
+                <div id="playerCards" class="hand-area"></div>
+              </div>
+
+              <div id="blackjackGameControls" class="controls">
+                <button id="hitButton" class="game-button">Hit</button>
+                <button id="standButton" class="game-button">Stand</button>
+              </div>
+
+              <div id="blackjackMessageArea" class="status">
+                Click Play to start
+              </div>
+
+              <div id="blackjackPlayAgainArea" class="hidden">
+                <button id="blackjackPlayAgainButton" class="game-button">Play Again?</button>
+              </div>
+            </div>
           </div>
         </div>
-        
-        <canvas id="gameBoard" class="game-board" width="512" height="512"></canvas>
-        
-        <div class="controls">
-          <div class="control-row">
-            <div>
-              <label class="game-label" for="speed">Speed:</label>
-              <select id="speed">
-                <option value="100">Slow</option>
-                <option value="75" selected>Normal</option>
-                <option value="50">Fast</option>
-                <option value="30">Very Fast</option>
-              </select>
-            </div>
-            <div>
-              <label class="game-label" for="targetLengthSelect">Win Length:</label>
-              <select id="targetLengthSelect">
-                <option value="10">10</option>
-                <option value="15" selected>15</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-                <option value="50">50</option>
-              </select>
-            </div>
-            <div>
-              <label class="game-label" for="ignoreBorders">
-                <input type="checkbox" id="ignoreBorders"> Ignore Borders
-              </label>
-            </div>
-          </div>
-          <div class="control-row">
-            <button id="playButton" class="game-button">Play</button>
-            <button id="resetButton" class="game-button">Reset</button>
-          </div>
-        </div>
-        
-        <div id="status" class="status">Press Play to start</div>
       </div>
-
-      <!-- Blackjack Game Container -->
-      <div class="game-container blackjack-container" id="blackjackGame">
-        <div id="startScreen">
-          <button id="playButton" class="game-button">Play Blackjack</button>
-        </div>
-
-        <div id="gameArea" class="hidden">
-          <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-2">Dealer's Hand (<span id="dealerScore">0</span>)</h2>
-            <div id="dealerCards" class="hand-area"></div>
-          </div>
-
-          <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-2">Your Hand (<span id="playerScore">0</span>)</h2>
-            <div id="playerCards" class="hand-area"></div>
-          </div>
-
-          <div id="gameControls" class="controls">
-            <button id="hitButton" class="game-button">Hit</button>
-            <button id="standButton" class="game-button">Stand</button>
-          </div>
-
-          <div id="messageArea" class="status">
-            Click Play to start
-          </div>
-
-          <div id="playAgainArea" class="hidden">
-            <button id="playAgainButton" class="game-button">Play Again?</button>
-          </div>
-        </div>
-      </div>
-      </section>
     </main>
   </div>
 
-  <include src="components/footer.html"></include>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2025 AI Tools Collection. All rights reserved.</p>
+        <div class="social-icons">
+          <a href="#" class="social-icon facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social-icon twitter" title="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="social-icon instagram" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="social-icon youtube" title="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="#" class="social-icon tiktok" title="TikTok">
+            <i class="fab fa-tiktok"></i>
+          </a>
+          <a href="#" class="social-icon telegram" title="Telegram">
+            <i class="fab fa-telegram-plane"></i>
+          </a>
+          <a href="#" class="social-icon whatsapp" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-  <script type="module">
-    import { initGame } from './js/games/snake.js';
-    import { initBlackjackGame } from './js/games/casinoBlackjack.js';
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      const menuLinks = document.querySelectorAll('.side-menu a');
-      const gameTitle = document.getElementById('gameTitle');
-      const snakeGame = document.getElementById('snakeGame');
-      const blackjackGame = document.getElementById('blackjackGame');
-      
-      // Initialize games
-      initGame();
-      initBlackjackGame();
-      
-      // Show Snake game by default
-      snakeGame.style.display = 'block';
-      blackjackGame.style.display = 'none';
-      
-      menuLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          const gameName = this.getAttribute('data-game');
-          gameTitle.textContent = this.textContent;
-          
-          // Hide all games
-          snakeGame.style.display = 'none';
-          blackjackGame.style.display = 'none';
-          
-          // Show selected game
-          if (gameName === 'snake') {
-            snakeGame.style.display = 'block';
-          } else if (gameName === 'blackjack') {
-            blackjackGame.style.display = 'block';
+  <!-- Load dependencies first -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+
+  <!-- Load core modules -->
+  <script type="module" src="js/modules/theme.js"></script>
+  <script type="module" src="js/modules/matrix.js"></script>
+  <script type="module" src="js/modules/pageTransitions.js"></script>
+
+  <!-- Load game scripts (non-module for local file support) -->
+  <script src="js/games/snake.js"></script>
+  <script src="js/games/casinoBlackjack.js"></script>
+
+  <script>
+    // Simple game menu logic
+    const menuLinks = document.querySelectorAll('.side-menu a');
+    const gameTitle = document.getElementById('gameTitle');
+    const snakeGame = document.getElementById('snakeGame');
+    const blackjackGame = document.getElementById('blackjackGame');
+    const gamePlaceholder = document.getElementById('gamePlaceholder');
+
+    let snakeInitialized = false;
+    let blackjackInitialized = false;
+
+    function hideAllGames() {
+      if (gamePlaceholder) gamePlaceholder.style.display = 'none';
+      if (snakeGame) snakeGame.style.display = 'none';
+      if (blackjackGame) {
+        blackjackGame.style.display = 'none';
+        blackjackGame.classList.remove('active');
+      }
+    }
+
+    function showGame(gameName) {
+      try {
+        hideAllGames();
+        window.log(`Showing game: ${gameName}`);
+
+        if (gameName === 'snake') {
+          if (snakeGame) snakeGame.style.display = 'block';
+          if (gameTitle) gameTitle.textContent = 'Snake';
+
+          if (!snakeInitialized) {
+            if (typeof window.initSnakeGame === 'function') {
+              window.initSnakeGame();
+              snakeInitialized = true;
+              window.log('Snake initialized', 'success');
+            } else {
+              window.log('Snake game function not found', 'error');
+            }
           }
-        });
+        } else if (gameName === 'blackjack') {
+          if (blackjackGame) {
+            blackjackGame.style.display = 'block';
+            blackjackGame.classList.add('active');
+          }
+          if (gameTitle) gameTitle.textContent = 'Casino Blackjack';
+
+          if (!blackjackInitialized) {
+            if (typeof window.initBlackjackGame === 'function') {
+              window.initBlackjackGame();
+              blackjackInitialized = true;
+              window.log('Blackjack initialized', 'success');
+            } else {
+              window.log('Blackjack game function not found', 'error');
+            }
+          }
+        } else {
+          // Show placeholder if no valid game
+          if (gamePlaceholder) gamePlaceholder.style.display = 'flex';
+          if (gameTitle) gameTitle.textContent = 'Select a Game';
+          window.log('Showing placeholder');
+        }
+      } catch (error) {
+        window.log(`Error showing game ${gameName}: ${error.message}`, 'error');
+        console.error(error);
+      }
+    }
+
+    // Handle menu clicks
+    menuLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        menuLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        const gameName = link.getAttribute('data-game');
+        showGame(gameName);
+        history.pushState(null, null, '#' + gameName);
       });
     });
+
+    // Initialize based on hash or default
+    function init() {
+      try {
+        window.log('Initializing games page...');
+        const hash = window.location.hash.slice(1);
+        const validGames = ['snake', 'blackjack'];
+
+        if (validGames.includes(hash)) {
+          // Set active menu item
+          menuLinks.forEach(l => {
+            if (l.getAttribute('data-game') === hash) {
+              l.classList.add('active');
+            } else {
+              l.classList.remove('active');
+            }
+          });
+          showGame(hash);
+        } else {
+          showGame(null);
+        }
+      } catch (error) {
+        window.log(`Init error: ${error.message}`, 'error');
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
-  <script type="module" src="scripts.js"></script>
 </body>
+
 </html>

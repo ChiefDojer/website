@@ -21,13 +21,13 @@ export class ThemeManager {
     async initializeWithRetry(retriesLeft) {
         try {
             this.themeToggle = document.querySelector(SELECTORS.THEME_TOGGLE);
-            
+
             if (!this.themeToggle && retriesLeft > 0) {
                 console.log(`Theme toggle not found, retrying... (${retriesLeft} attempts left)`);
                 await new Promise(resolve => setTimeout(resolve, this.retryDelay));
                 return this.initializeWithRetry(retriesLeft - 1);
             }
-            
+
             if (!this.themeToggle) {
                 throw new Error('Theme toggle element not found after retries');
             }
@@ -72,7 +72,7 @@ export class ThemeManager {
             this.setTheme(THEME.DARK);
             return;
         }
-        
+
         if (savedTheme === THEME.LIGHT) {
             this.themeToggle.checked = false; // Fix: unchecked for light theme
             this.setTheme(THEME.LIGHT);

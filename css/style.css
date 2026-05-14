@@ -1,19 +1,149 @@
-/* Base Styles */
-@import 'base.css';
+/* Base styles */
+@import url('./base.css');
+@import url('./layout.css');
+@import url('./theme.css');
 
-/* Layout */
-@import 'layout.css';
+/* Import component styles */
+@import url('./components/header.css');
+@import url('./components/footer.css');
+@import url('./components/cards.css');
+@import url('./components/tool-card.css');
+@import url('./components/game-card.css');
+@import url('./components/news-card.css');
+@import url('./components/example-card.css');
+@import url('./components/social-icons.css');
+@import url('./components/tools-filter.css');
+@import url('./components/theme-switch.css');
 
-/* Components */
-@import 'components/header.css';
-@import 'components/footer.css';
-@import 'components/cards.css';
-@import 'components/social-icons.css';
-@import 'components/theme-switch.css';
-@import 'components/tool-card.css';
-@import 'components/tools-filter.css';
-@import 'components/news-card.css';
-@import 'components/game-card.css';
-@import 'components/example-card.css';
+/* Game styles */
+@import url('./games/games.css');
+@import url('./games/snake.css');
+@import url('./games/blackjack.css');
 
-/* If you need to override any styles, add them below */
+/* Global Typography & Reset */
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-color);
+}
+
+/* Futuristic Text Glows */
+.text-glow {
+  text-shadow: var(--glow-text);
+}
+
+.text-gradient {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Utility classes */
+.hidden {
+  display: none !important;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  border-radius: var(--border-radius-full);
+  border: 2px solid var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+/* Selection Styling */
+::selection {
+  background: var(--primary-color);
+  color: #000;
+}
+
+/* Component Overrides */
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--primary-color);
+  text-shadow: var(--glow-text);
+}
+
+.nav-links a {
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-md);
+  transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+  box-shadow: var(--glow-primary);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: 2rem;
+  color: var(--text-secondary);
+}

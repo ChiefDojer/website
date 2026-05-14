@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Интерактивная карта</title>
+    <style>
+        /* Основные стили страницы */
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #050510;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Кнопка "Назад" */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            /* Чтобы была поверх 3D */
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            padding: 10px 20px;
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 255, 255, 0.2);
+            border-color: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        /* Стиль всплывающих слов */
+        .label {
+            color: rgba(255, 255, 255, 0.9);
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 0 0 4px #00ffff;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 2px 6px;
+            border-left: 2px solid #00ffff;
+            pointer-events: none;
+            /* Мышь проходит сквозь текст */
+            user-select: none;
+            white-space: nowrap;
+        }
+    </style>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+    <a href="index.html" class="back-button">← Назад на сайт</a>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        // --- НАСТРОЙКИ ---
+        const config = {
+            globeRadius: 12,
+            particlesCount: 2000,
+            rotationSpeed: 0.0008,
+            colors: {
+                bg: 0x050510,
+                dots: 0x88ccff,
+                lines: 0x00ffff
+            }
+        };
+
+        // ВАШИ СЛОВА (Можете менять их тут)
+        const terms = [
+            "SEO", "MARKETING", "AUDIT", "BACKLINKS",
+            "ANALYTICS", "CONTENT", "SITEMAP", "KEYWORDS",
+            "OPTIMIZATION", "TRAFFIC", "GOOGLE ADS", "SERP",
+            "INDEXING", "ROBOTS.TXT", "UX/UI", "CONVERSION",
+            "TARGETING", "LEADS", "STRATEGY", "GROWTH"
+        ];
+
+        // --- СЦЕНА ---
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(config.colors.bg, 0.03); // Эффект глубины
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 15, 40); // Начальная позиция камеры
+
+        // Рендер 3D графики
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
+
+        // Рендер HTML текста
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0px';
+        document.body.appendChild(labelRenderer.domElement);
+
+        // Управление мышкой
+        const controls = new OrbitControls(camera, labelRenderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.8;
+        controls.enableZoom = false; // Отключаем зум, если не нужен
+
+        // --- СОЗДАНИЕ ГЛОБУСА ---
+        const globeGroup = new THREE.Group();
+        scene.add(globeGroup);
+
+        // 1. Точки (звезды/города)
+        const geometry = new THREE.BufferGeometry();
+        const positions = [];
+
+        // Распределяем точки по сфере (Спираль Фибоначчи)
+        for (let i = 0; i < config.particlesCount; i++) {
+            const phi = Math.acos(-1 + (2 * i) / config.particlesCount);
+            const theta = Math.sqrt(config.particlesCount * Math.PI) * phi;
+
+            const r = config.globeRadius;
+            positions.push(
+                r * Math.cos(theta) * Math.sin(phi),
+                r * Math.sin(theta) * Math.sin(phi),
+                r * Math.cos(phi)
+            );
+        }
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        const material = new THREE.PointsMaterial({ color: config.colors.dots, size: 0.12 });
+        const particles = new THREE.Points(geometry, material);
+        globeGroup.add(particles);
+
+        // 2. Каркас (Wireframe) для красоты
+        const wireGeo = new THREE.IcosahedronGeometry(config.globeRadius - 0.1, 2);
+        const wireMat = new THREE.MeshBasicMaterial({
+            color: 0x334466,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.05
+        });
+        const wireMesh = new THREE.Mesh(wireGeo, wireMat);
+        globeGroup.add(wireMesh);
+
+        // 3. Линии и Слова
+        terms.forEach((term, i) => {
+            // Распределяем слова равномерно
+            const phi = Math.acos(-1 + (2 * i) / terms.length);
+            const theta = Math.sqrt(terms.length * Math.PI * 8) * phi; // *8 для большего разброса
+
+            // Координаты на поверхности
+            const r = config.globeRadius;
+            const x = r * Math.cos(theta) * Math.sin(phi);
+            const y = r * Math.sin(theta) * Math.sin(phi);
+            const z = r * Math.cos(phi);
+            const startVec = new THREE.Vector3(x, y, z);
+
+            // Координаты в воздухе (длина луча рандомная)
+            const rayLen = 4 + Math.random() * 3;
+            const endVec = startVec.clone().normalize().multiplyScalar(r + rayLen);
+
+            // Рисуем линию
+            const points = [startVec, endVec];
+            const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+            const lineMat = new THREE.LineBasicMaterial({ color: config.colors.lines, transparent: true, opacity: 0.3 });
+            const line = new THREE.Line(lineGeo, lineMat);
+            globeGroup.add(line);
+
+            // Создаем HTML метку
+            const div = document.createElement('div');
+            div.className = 'label';
+            div.textContent = term;
+            const label = new CSS2DObject(div);
+            label.position.copy(endVec);
+            globeGroup.add(label);
+        });
+
+        // --- АНИМАЦИЯ ---
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+        }
+
+        // Адаптив под размер экрана
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+
+</html>

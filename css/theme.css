@@ -1,0 +1,152 @@
+:root {
+  /* Cosmic Palette - Light Mode (High-Tech Clean) */
+  --primary-color: #00f3ff;
+  /* Neon Cyan */
+  --primary-hover: #00c2cc;
+  --secondary-color: #bc13fe;
+  /* Cosmic Purple */
+  --accent-color: #ff0080;
+  /* Plasma Pink */
+
+  --text-color: #0f172a;
+  --text-secondary: #475569;
+  --border-color: #e2e8f0;
+
+  /* Backgrounds */
+  --bg-color: #f8fafc;
+  --header-bg: rgba(255, 255, 255, 0.7);
+  --footer-bg: #f1f5f9;
+  --sidebar-bg: rgba(255, 255, 255, 0.7);
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --hover-bg: rgba(0, 243, 255, 0.1);
+
+  /* Gradients */
+  --primary-gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  --glass-gradient: linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
+
+  /* Shadows & Glows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --glow-primary: 0 0 15px rgba(0, 243, 255, 0.3);
+  --glow-text: 0 0 10px rgba(0, 243, 255, 0.2);
+
+  /* Layout */
+  --max-width: 1400px;
+  /* Wider for modern feel */
+  --header-height: 5rem;
+  --footer-height: 80px;
+  --sidebar-width: 280px;
+  --z-header: 1000;
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  /* Border Radius */
+  --border-radius-sm: 0.5rem;
+  --border-radius-md: 1rem;
+  --border-radius-lg: 1.5rem;
+  --border-radius-full: 9999px;
+
+  /* Transitions */
+  --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Glassmorphism */
+  --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+  --glass-blur: blur(12px);
+}
+
+/* Dark theme (Deep Space) */
+[data-theme="dark"] {
+  --primary-color: #00f3ff;
+  --primary-hover: #00c2cc;
+  --secondary-color: #bc13fe;
+  --accent-color: #ff0080;
+
+  --text-color: #f8fafc;
+  --text-secondary: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.1);
+
+  --bg-color: #030014;
+  /* Deep Void */
+  --header-bg: rgba(3, 0, 20, 0.7);
+  --footer-bg: #0f172a;
+  --sidebar-bg: rgba(15, 23, 42, 0.6);
+  --card-bg: rgba(30, 41, 59, 0.4);
+  --hover-bg: rgba(0, 243, 255, 0.15);
+
+  --glass-gradient: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.6));
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+
+  --glow-primary: 0 0 20px rgba(0, 243, 255, 0.5);
+  --glow-text: 0 0 15px rgba(0, 243, 255, 0.4);
+}
+
+/* Theme transitions */
+body * {
+  transition: background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+/* Active states */
+.nav-links a.active,
+.side-menu a.active {
+  background: var(--primary-gradient);
+  color: #000;
+  /* Contrast for neon */
+  box-shadow: var(--glow-primary);
+  font-weight: 600;
+}
+
+/* Hover states */
+.nav-links a:hover,
+.side-menu a:hover {
+  background-color: var(--hover-bg);
+  color: var(--primary-color);
+  text-shadow: var(--glow-text);
+}
+
+.tool-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: var(--glow-primary), var(--shadow-md);
+  border-color: var(--primary-color);
+}
+
+/* Focus states */
+a:focus,
+button:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 4px;
+  box-shadow: var(--glow-primary);
+}
+
+/* Matrix canvas */
+#matrix-canvas {
+  opacity: 0.03;
+  transition: opacity 0.5s ease;
+}
+
+[data-theme="dark"] #matrix-canvas {
+  opacity: 0.15;
+}
+
+/* Glass effect */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+}
+
+.site-header {
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: var(--glass-border);
+}

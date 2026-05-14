@@ -3,30 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About - AI Tools Collection</title>
+  <meta name="description" content="About AI Tools Collection - Learn more about our platform and mission." />
+  <meta name="keywords" content="AI tools, about us, artificial intelligence, mission, vision" />
+  <meta name="author" content="AI Tools Collection" />
+  <meta name="theme-color" content="#2563eb" />
+  <title>About Us - AI Tools Collection</title>
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body>
   <canvas id="matrix-canvas"></canvas>
-  <include src="components/header.html"></include>
+  
+  <!-- Header will be loaded here -->
+  <div id="header-container"></div>
 
   <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-content">
+        <div class="menu-section">
+          <h3>About</h3>
+          <ul class="side-menu">
+            <li><a href="#mission">Our Mission</a></li>
+            <li><a href="#offer">What We Offer</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
     <main class="main-content">
       <section class="about-section">
         <h2>About AI Tools Collection</h2>
         <div class="about-content">
-          <p>Welcome to AI Tools Collection! This website serves as a curated repository of artificial intelligence tools and resources that I've found useful in my journey with AI technology.</p>
+          <p>Welcome to AI Tools Collection, your comprehensive resource for discovering and exploring the latest in artificial intelligence technology.</p>
           
           <h3>Our Mission</h3>
-          <p>Our mission is to provide easy access to the best AI tools available, helping users navigate the rapidly evolving landscape of artificial intelligence technology.</p>
+          <p>We strive to make artificial intelligence accessible to everyone by providing a curated collection of the most useful and innovative AI tools available today.</p>
 
           <h3>What We Offer</h3>
           <ul>
-            <li>Carefully curated collection of AI tools</li>
-            <li>Regular updates with new AI technologies</li>
-            <li>Organized categories for easy navigation</li>
-            <li>Direct links to official tool websites</li>
+            <li>Curated selection of AI tools and technologies</li>
+            <li>Detailed reviews and comparisons</li>
+            <li>Regular updates on new AI developments</li>
+            <li>User guides and tutorials</li>
+            <li>Community insights and feedback</li>
           </ul>
 
           <h3>Contact</h3>
@@ -36,8 +56,9 @@
     </main>
   </div>
 
-  <include src="components/footer.html"></include>
+  <!-- Footer will be loaded here -->
+  <div id="footer-container"></div>
 
-  <script type="module" src="scripts.js"></script>
+  <script type="module" src="js/scripts.js"></script>
 </body>
 </html>
